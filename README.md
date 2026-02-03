@@ -37,6 +37,43 @@ npm run build
 npm run preview
 ```
 
+## Deployment to GitHub Pages
+
+This project is configured for automatic deployment to GitHub Pages using GitHub Actions.
+
+### Automatic Deployment (Recommended)
+
+1. **Enable GitHub Pages in your repository:**
+   - Go to your repository on GitHub
+   - Navigate to **Settings** → **Pages**
+   - Under **Source**, select **GitHub Actions**
+
+2. **Push your code:**
+   - The workflow will automatically deploy when you push to the `main` branch
+   - You can also manually trigger it from the **Actions** tab → **Deploy to GitHub Pages** → **Run workflow**
+
+3. **Access your site:**
+   - Your site will be available at `https://[your-username].github.io/world-clock/`
+   - The URL will be shown in the repository's **Settings** → **Pages** section
+
+### Manual Deployment (Alternative)
+
+If you prefer to deploy manually:
+
+```bash
+# Build the project
+npm run build
+
+# Install gh-pages package (one-time setup)
+npm install --save-dev gh-pages
+
+# Add deploy script to package.json:
+# "deploy": "gh-pages -d dist"
+
+# Deploy
+npm run deploy
+```
+
 ## Usage
 
 1. The app automatically displays your local time zone

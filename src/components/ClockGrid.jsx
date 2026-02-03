@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import ClockCard from './ClockCard'
 import { getDarknessLevel, getBackgroundColor, getTextColor } from '../utils/sunTimes'
 import { getActualTimezone } from '../utils/timeZoneMapping'
-import { Plus, RotateCcw, Share2, Bookmark } from 'lucide-react'
+import { Plus, RotateCcw, Share2, Info } from 'lucide-react'
 import './ClockGrid.css'
 import './Sidebar.css'
 
-function ClockGrid({ timeZones, onAddClick, onDelete, onShareClick, onSaveClick }) {
+function ClockGrid({ timeZones, onAddClick, onDelete, onShareClick, onAboutClick }) {
   const [currentTimes, setCurrentTimes] = useState({})
   const [customTimeDate, setCustomTimeDate] = useState(null) // Date object representing the custom time
   const [invalidTimeInput, setInvalidTimeInput] = useState(false) // Track if current input is invalid
@@ -561,11 +561,11 @@ function ClockGrid({ timeZones, onAddClick, onDelete, onShareClick, onSaveClick 
           <Share2 size={20} />
         </button>
         <button 
-          className="save-button" 
-          onClick={onSaveClick}
-          title="Save bookmark"
+          className="about-button" 
+          onClick={onAboutClick}
+          title="About"
         >
-          <Bookmark size={20} />
+          <Info size={20} />
         </button>
       </div>
     </div>

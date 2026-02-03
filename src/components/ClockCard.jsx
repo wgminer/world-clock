@@ -8,28 +8,70 @@ function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete,
   const inputRef = useRef(null)
   const displayName = getTimezoneDisplayName(timeZone)
   
-  // Get date indicator text
-  const getDateIndicator = () => {
-    if (dateOffset === 1) return 'TOMORROW'
-    if (dateOffset === -1) return 'YESTERDAY'
-    return null
-  }
+  // 24-hour color lookup table
+  const HOUR_COLORS = [
+    '#1a237e', // 0 - Midnight (dark blue)
+    '#1a237e', // 1 - Early night
+    '#1a237e', // 2 - Deep night
+    '#1a237e', // 3 - Late night
+    '#283593', // 4 - Pre-dawn
+    '#3949ab', // 5 - Dawn
+    '#5c6bc0', // 6 - Early morning
+    '#7986cb', // 7 - Morning
+    '#9fa8da', // 8 - Late morning
+    '#c5cae9', // 9 - Mid-morning
+    '#e8eaf6', // 10 - Late morning
+    '#fff9c4', // 11 - Pre-noon
+    '#ffeb3b', // 12 - Noon (yellow)
+    '#fff176', // 13 - Early afternoon
+    '#ffd54f', // 14 - Afternoon
+    '#ffc107', // 15 - Mid-afternoon
+    '#ffb300', // 16 - Late afternoon
+    '#ff9800', // 17 - Early evening (orange)
+    '#ff6f00', // 18 - Evening
+    '#ff5722', // 19 - Late evening (red-orange)
+    '#e64a19', // 20 - Dusk
+    '#bf360c', // 21 - Night
+    '#8d1f0f', // 22 - Deep night
+    '#1a237e', // 23 - Midnight (dark blue)
+  ]
 
   // Get background color based on time of day
   const getTimeOfDayColor = () => {
-    if (hour === undefined || hour === null) return '#1a237e' // Night
-    if (hour >= 5 && hour < 12) return '#ffeb3b' // Morning (yellow)
-    if (hour >= 12 && hour < 17) return '#ff9800' // Afternoon (orange)
-    if (hour >= 17 && hour < 21) return '#ff5722' // Evening (red-orange)
-    return '#1a237e' // Night (dark blue)
+    if (hour === undefined || hour === null) return HOUR_COLORS[0]
+    const hourIndex = Math.floor(hour) % 24
+    return HOUR_COLORS[hourIndex]
   }
 
   // Get text color based on background color (for contrast)
   const getTextColorForBackground = (bgColor) => {
-    // Morning and Afternoon use dark text, Evening and Night use light text
     if (hour === undefined || hour === null) return '#ffffff'
-    if (hour >= 5 && hour < 17) return '#000000' // Morning/Afternoon: dark text
-    return '#ffffff' // Evening/Night: light text
+    
+    // Parse hex color
+    const hex = bgColor.replace('#', '')
+    if (hex.length === 6) {
+      const r = parseInt(hex.substring(0, 2), 16)
+      const g = parseInt(hex.substring(2, 4), 16)
+      const b = parseInt(hex.substring(4, 6), 16)
+      
+      // Calculate brightness (using relative luminance formula)
+      const brightness = (r * 299 + g * 587 + b * 114) / 1000
+      
+      // If brightness is high, use dark text; otherwise use light text
+      return brightness > 128 ? '#000000' : '#ffffff'
+    }
+    
+    // Fallback
+    return '#ffffff'
+  }
+
+  // Get font weight based on text color
+  const getFontWeight = (textColor) => {
+    // If text is light (white or similar), reduce weight by 100
+    if (textColor === '#ffffff' || textColor.toLowerCase().includes('fff')) {
+      return 200 // Reduced from 300
+    }
+    return 300
   }
 
   // Sync editValue when time prop changes (but only if not editing)
@@ -49,7 +91,7 @@ function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete,
 
   const handleTimeClick = (e) => {
     // Don't trigger if clicking on delete button or other elements
-    if (e.target.closest('.delete-button') || e.target.closest('.user-badge') || e.target.closest('.date-badge')) {
+    if (e.target.closest('.delete-button') || e.target.closest('.user-badge')) {
       return
     }
     setIsEditing(true)
@@ -103,9 +145,9 @@ function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete,
     return false
   }
 
-  const dateIndicator = getDateIndicator()
   const bgColor = getTimeOfDayColor()
   const txtColor = getTextColorForBackground(bgColor)
+  const fontWeight = getFontWeight(txtColor)
 
   return (
     <div 
@@ -120,15 +162,6 @@ function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete,
           REMOVE
         </button>
       )}
-      {isUserTimeZone && (
-        <span className="user-badge">
-          <span className="user-badge-dot"></span>
-          YOU
-        </span>
-      )}
-      {dateIndicator && (
-        <span className="date-badge">{dateIndicator}</span>
-      )}
       <div className="clock-card-content">
         <div className="time-display-wrapper">
           {isEditing ? (
@@ -142,14 +175,24 @@ function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete,
               onKeyDown={handleInputKeyDown}
               style={{
                 backgroundColor: bgColor,
-                color: txtColor
+                color: txtColor,
+                fontWeight: fontWeight
               }}
             />
           ) : (
-            <div className="time-display" onClick={handleTimeClick}>{time}</div>
+            <div 
+              className="time-display" 
+              onClick={handleTimeClick}
+              style={{ fontWeight: fontWeight }}
+            >
+              {time}
+            </div>
           )}
         </div>
         <div className="location-display">{displayName}</div>
+        {isUserTimeZone && (
+          <span className="user-badge">you</span>
+        )}
       </div>
     </div>
   )

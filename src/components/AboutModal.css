@@ -1,0 +1,9 @@
+.about-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about-modal-content p {
+  margin: 0;
+}

@@ -7,6 +7,8 @@ export const TIMEZONE_SHORTHAND = {
   'America/Denver': 'DEN',
   'America/Los_Angeles': 'LA',
   'America/San_Francisco': 'SF',
+  'America/Seattle': 'SEA',
+  'America/Portland': 'PDX',
   'America/Phoenix': 'PHX',
   'America/Anchorage': 'ANC',
   'Pacific/Honolulu': 'HNL',

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import ClockGrid from './components/ClockGrid'
 import TimeZoneModal from './components/TimeZoneModal'
 import ShareModal from './components/ShareModal'
+import AboutModal from './components/AboutModal'
 import { getTimezoneShorthand, decodeTimezoneFromShorthand } from './utils/timeZoneNames'
 import './App.css'
 
@@ -9,6 +10,7 @@ function App() {
   const [timeZones, setTimeZones] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
 
   // Get user's time zone
   const getUserTimeZone = () => {
@@ -94,28 +96,8 @@ function App() {
     setIsShareModalOpen(true)
   }
 
-  const handleSaveClick = () => {
-    // Try to use the Web Share API if available
-    if (navigator.share) {
-      navigator.share({
-        title: 'World Clock',
-        text: 'Check out this world clock',
-        url: getShareUrl()
-      }).catch(err => {
-        console.log('Error sharing:', err)
-      })
-    } else {
-      // Fallback: try to trigger bookmark (browser-dependent)
-      // Most browsers don't allow programmatic bookmarking, so we'll just copy the URL
-      const url = getShareUrl()
-      navigator.clipboard.writeText(url).then(() => {
-        alert('Link copied to clipboard! You can bookmark this page.')
-      }).catch(err => {
-        console.log('Error copying:', err)
-        // Last resort: show the URL
-        alert(`Share this URL: ${url}`)
-      })
-    }
+  const handleAboutClick = () => {
+    setIsAboutModalOpen(true)
   }
 
   return (
@@ -125,7 +107,7 @@ function App() {
         onAddClick={() => setIsModalOpen(true)}
         onDelete={handleDeleteTimeZone}
         onShareClick={handleShareClick}
-        onSaveClick={handleSaveClick}
+        onAboutClick={handleAboutClick}
       />
       {isModalOpen && (
         <TimeZoneModal
@@ -138,6 +120,11 @@ function App() {
         <ShareModal
           onClose={() => setIsShareModalOpen(false)}
           shareUrl={getShareUrl()}
+        />
+      )}
+      {isAboutModalOpen && (
+        <AboutModal
+          onClose={() => setIsAboutModalOpen(false)}
         />
       )}
     </div>

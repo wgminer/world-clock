@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
-import { X, Copy, Mail, Check } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import { X } from 'lucide-react'
 import './Modal.css'
-import './ShareModal.css'
+import './AboutModal.css'
 
-function ShareModal({ onClose, shareUrl }) {
-  const [copied, setCopied] = useState(false)
+function AboutModal({ onClose }) {
   const modalRef = useRef(null)
   const closeButtonRef = useRef(null)
   const previousActiveElement = useRef(null)
@@ -61,29 +60,13 @@ function ShareModal({ onClose, shareUrl }) {
     }
   }, [onClose])
 
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error('Failed to copy:', err)
-    }
-  }
-
-  const handleEmailShare = () => {
-    const subject = encodeURIComponent('World Clock')
-    const body = encodeURIComponent(`Check out this world clock: ${shareUrl}`)
-    window.location.href = `mailto:?subject=${subject}&body=${body}`
-  }
-
   return (
     <div 
       className="modal-overlay" 
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-labelledby="share-modal-title"
+      aria-labelledby="about-modal-title"
     >
       <div 
         className="modal-content" 
@@ -93,57 +76,22 @@ function ShareModal({ onClose, shareUrl }) {
         <button 
           className="modal-close" 
           onClick={onClose} 
-          aria-label="Close share modal"
+          aria-label="Close about modal"
           ref={closeButtonRef}
         >
           <X size={24} aria-hidden="true" />
         </button>
         <div className="modal-header">
-          <h2 className="modal-title" id="share-modal-title">Share World Clock</h2>
+          <h2 className="modal-title" id="about-modal-title">About</h2>
         </div>
-        <div className="modal-body share-modal-content">
-          <div className="share-url-container">
-            <label htmlFor="share-url-input" className="sr-only">Share URL</label>
-            <input
-              id="share-url-input"
-              type="text"
-              className="share-url-input"
-              value={shareUrl}
-              readOnly
-              aria-label="Share URL"
-            />
-          </div>
-          <div className="share-actions">
-            <button 
-              className="share-action-button" 
-              onClick={handleCopyLink}
-              aria-label={copied ? "Link copied to clipboard" : "Copy link to clipboard"}
-            >
-              {copied ? (
-                <>
-                  <Check size={20} aria-hidden="true" />
-                  <span>Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Copy size={20} aria-hidden="true" />
-                  <span>Copy Link</span>
-                </>
-              )}
-            </button>
-            <button 
-              className="share-action-button" 
-              onClick={handleEmailShare}
-              aria-label="Share via email"
-            >
-              <Mail size={20} aria-hidden="true" />
-              <span>Email</span>
-            </button>
-          </div>
+        <div className="modal-body about-modal-content">
+          <p>World Clock is a simple, elegant way to view the time across multiple time zones.</p>
+          <p>Click on any clock to edit the time and see how it affects all other clocks in real-time.</p>
+          <p>Add clocks using the + button, and share your configuration with others.</p>
         </div>
       </div>
     </div>
   )
 }
 
-export default ShareModal
+export default AboutModal
