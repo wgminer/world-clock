@@ -1,0 +1,22 @@
+.clock-grid-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.clock-grid {
+  background-color: #000000;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), 1fr);
+  grid-template-rows: repeat(var(--grid-rows), 1fr);
+  gap: 0;
+  flex: 1;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(var(--grid-rows), 1fr);
+  }
+}

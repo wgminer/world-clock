@@ -1,0 +1,78 @@
+.time-input-modal {
+  max-width: 500px;
+  width: 90%;
+}
+
+.time-input-info {
+  margin: 1.5rem 0;
+  text-align: center;
+
+  p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  strong {
+    font-weight: bold;
+  }
+}
+
+.time-input-hint {
+  color: #666;
+  font-size: 0.8rem !important;
+}
+
+.time-input-field {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 2px solid #000;
+  background: #fff;
+  color: #000;
+  font-family: inherit;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+
+  &:focus {
+    outline: none;
+    border-color: #000;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.time-input-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.time-input-cancel,
+.time-input-submit {
+  padding: 0.75rem 2rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  border: 2px solid #000;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+
+  &:hover {
+    background: #000;
+    color: #fff;
+  }
+}
+
+.time-input-submit {
+  background: #000;
+  color: #fff;
+
+  &:hover {
+    background: #333;
+  }
+}

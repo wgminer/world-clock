@@ -1,0 +1,106 @@
+// Timezone shorthand mapping (for URL encoding)
+// Maps IANA timezone identifiers to short codes for URLs
+export const TIMEZONE_SHORTHAND = {
+  // North America
+  'America/New_York': 'NYC',
+  'America/Chicago': 'CHI',
+  'America/Denver': 'DEN',
+  'America/Los_Angeles': 'LA',
+  'America/San_Francisco': 'SF',
+  'America/Phoenix': 'PHX',
+  'America/Anchorage': 'ANC',
+  'Pacific/Honolulu': 'HNL',
+  'America/Toronto': 'TOR',
+  'America/Vancouver': 'VAN',
+  'America/Mexico_City': 'MEX',
+  // South America
+  'America/Sao_Paulo': 'SP',
+  'America/Buenos_Aires': 'BA',
+  'America/Argentina/Buenos_Aires': 'BA',
+  'America/Bogota': 'BOG',
+  'America/Caracas': 'CCS',
+  'America/Lima': 'LIM',
+  'America/Santiago': 'SCL',
+  // Europe
+  'Europe/London': 'LON',
+  'Europe/Paris': 'PAR',
+  'Europe/Berlin': 'BER',
+  'Europe/Rome': 'ROM',
+  'Europe/Madrid': 'MAD',
+  'Europe/Amsterdam': 'AMS',
+  'Europe/Stockholm': 'STO',
+  'Europe/Moscow': 'MSK',
+  'Europe/Athens': 'ATH',
+  'Europe/Dublin': 'DUB',
+  'Europe/Lisbon': 'LIS',
+  'Europe/Prague': 'PRG',
+  'Europe/Warsaw': 'WAW',
+  'Europe/Zurich': 'ZUR',
+  'Atlantic/Reykjavik': 'REK',
+  // Middle East
+  'Asia/Dubai': 'DXB',
+  'Asia/Tel_Aviv': 'TLV',
+  'Asia/Riyadh': 'RUH',
+  'Asia/Kuwait': 'KWI',
+  'Asia/Baghdad': 'BGW',
+  // Asia - Major Cities
+  'Asia/Tokyo': 'TYO',
+  'Asia/Seoul': 'SEL',
+  'Asia/Shanghai': 'SHA',
+  'Asia/Hong_Kong': 'HKG',
+  'Asia/Singapore': 'SIN',
+  'Asia/Bangkok': 'BKK',
+  'Asia/Kuala_Lumpur': 'KUL',
+  'Asia/Jakarta': 'JKT',
+  'Asia/Manila': 'MNL',
+  'Asia/Taipei': 'TPE',
+  'Asia/Kolkata': 'CCU',
+  'Asia/Karachi': 'KHI',
+  'Asia/Dhaka': 'DAC',
+  'Asia/Ho_Chi_Minh': 'SGN',
+  'Asia/Delhi': 'DEL',
+  'Asia/Mumbai': 'BOM',
+  'Asia/Hanoi': 'HAN',
+  // Australia & Pacific
+  'Australia/Sydney': 'SYD',
+  'Australia/Melbourne': 'MEL',
+  'Australia/Brisbane': 'BNE',
+  'Australia/Perth': 'PER',
+  'Australia/Adelaide': 'ADL',
+  'Australia/Darwin': 'DRW',
+  'Australia/Hobart': 'HBA',
+  'Pacific/Auckland': 'AKL',
+  'Pacific/Fiji': 'SUV',
+  // Africa
+  'Africa/Cairo': 'CAI',
+  'Africa/Johannesburg': 'JNB',
+  'Africa/Lagos': 'LOS',
+  'Africa/Nairobi': 'NBO',
+  'Africa/Casablanca': 'CMN',
+}
+
+// Reverse mapping: shorthand to full timezone
+export const SHORTHAND_TO_TIMEZONE = Object.fromEntries(
+  Object.entries(TIMEZONE_SHORTHAND).map(([tz, shorthand]) => [shorthand, tz])
+)
+
+// Get shorthand code for URL encoding
+export function getTimezoneShorthand(timeZone) {
+  return TIMEZONE_SHORTHAND[timeZone] || timeZone
+}
+
+// Get full city name for display
+export function getTimezoneDisplayName(timeZone) {
+  const parts = timeZone.split('/')
+  const city = parts[parts.length - 1].replace(/_/g, ' ')
+  
+  // Capitalize each word
+  return city.split(' ').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  ).join(' ')
+}
+
+// Decode shorthand from URL to full timezone
+export function decodeTimezoneFromShorthand(shorthand) {
+  return SHORTHAND_TO_TIMEZONE[shorthand] || shorthand
+}
