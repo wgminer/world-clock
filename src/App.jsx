@@ -26,29 +26,38 @@ function App() {
 
   // Update URL when time zones change (use abbreviations in URL)
   const updateURL = (zones) => {
-    const params = new URLSearchParams()
     if (zones.length > 0) {
       // Convert full timezone names to abbreviations for URL
       const abbreviations = zones.map(tz => getTimezoneShorthand(tz))
-      params.set('zones', abbreviations.join(','))
+      // Manually construct query string to avoid URLSearchParams encoding + as %2B
+      const newURL = `${window.location.pathname}?zones=${abbreviations.join('+')}`
+      window.history.pushState({}, '', newURL)
+    } else {
+      window.history.pushState({}, '', window.location.pathname)
     }
-    const newURL = `${window.location.pathname}${zones.length > 0 ? '?' + params.toString() : ''}`
-    window.history.pushState({}, '', newURL)
   }
 
   // Parse time zones from URL (decode abbreviations to full timezone names)
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const zonesParam = params.get('zones')
+    const searchParams = window.location.search
+    // Handle both URL-encoded (%2B) and literal (+) plus signs, and old comma format
+    const zonesMatch = searchParams.match(/[?&]zones=([^&]*)/)
+    const zonesParam = zonesMatch ? decodeURIComponent(zonesMatch[1]) : null
     
     if (zonesParam) {
+      // Check if using old comma-separated format
+      const isOldFormat = zonesParam.includes(',') && !zonesParam.includes('+')
+      
       // Decode abbreviations from URL to full timezone names
-      const abbreviations = zonesParam.split(',').filter(Boolean)
+      // Support both comma (old) and plus (new) separators
+      const separator = isOldFormat ? ',' : '+'
+      const abbreviations = zonesParam.split(separator).filter(Boolean)
       const zones = abbreviations.map(abbr => decodeTimezoneFromShorthand(abbr))
       const orderedZones = ensureUserTimeZoneFirst(zones)
       setTimeZones(orderedZones)
-      // Update URL if order changed (will re-encode to abbreviations)
-      if (orderedZones.join(',') !== zones.join(',')) {
+      
+      // If old format detected or order changed, redirect to new format
+      if (isOldFormat || orderedZones.join(',') !== zones.join(',')) {
         updateURL(orderedZones)
       }
     } else {
@@ -84,12 +93,12 @@ function App() {
   }
 
   const getShareUrl = () => {
-    const params = new URLSearchParams()
     if (timeZones.length > 0) {
       const abbreviations = timeZones.map(tz => getTimezoneShorthand(tz))
-      params.set('zones', abbreviations.join(','))
+      // Manually construct query string to avoid URLSearchParams encoding + as %2B
+      return `${window.location.origin}${window.location.pathname}?zones=${abbreviations.join('+')}`
     }
-    return `${window.location.origin}${window.location.pathname}${timeZones.length > 0 ? '?' + params.toString() : ''}`
+    return `${window.location.origin}${window.location.pathname}`
   }
 
   const handleShareClick = () => {
