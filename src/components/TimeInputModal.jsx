@@ -120,7 +120,7 @@ function TimeInputModal({ timeZone, currentTime, onConfirm, onClose }) {
               className="time-input-field"
               placeholder="3:45 PM"
               value={timeInput}
-              onChange={(e) => setTimeInput(e.target.value)}
+              onChange={(e) => setTimeInput(e.target.value.toUpperCase())}
               aria-label="Enter time"
             />
             <div className="time-input-actions">

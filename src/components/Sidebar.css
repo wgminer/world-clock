@@ -8,6 +8,7 @@
   flex-direction: column;
   padding: 1rem;
   flex-shrink: 0;
+  position: relative;
 
   @media (max-width: 768px) {
     width: clamp(3rem, 6vw, 4rem);
@@ -62,8 +63,19 @@
   }
 }
 
-.reset-time-button,
 .share-button,
 .about-button {
   margin-top: 1rem;
+}
+
+.reset-time-button {
+  margin-top: auto;
+  background: #dc2626;
+  color: #ff9999;
+  border: none;
+
+  &:hover {
+    background: #dc2626;
+    color: #ffffff;
+  }
 }

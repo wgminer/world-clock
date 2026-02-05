@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import './ClockCard.css'
 import { getTimezoneDisplayName } from '../utils/timeZoneNames'
 
-function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete, onTimeChange }) {
+function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete, onTimeChange, onEditingChange }) {
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState(time)
   const inputRef = useRef(null)
@@ -96,10 +96,12 @@ function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete,
     }
     setIsEditing(true)
     setEditValue(time)
+    if (onEditingChange) onEditingChange(true)
   }
 
   const handleInputChange = (e) => {
-    const newValue = e.target.value
+    // Force uppercase conversion
+    const newValue = e.target.value.toUpperCase()
     setEditValue(newValue)
     // Update other clocks in real-time as user types
     onTimeChange(newValue)
@@ -107,6 +109,7 @@ function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete,
 
   const handleInputBlur = () => {
     setIsEditing(false)
+    if (onEditingChange) onEditingChange(false)
     // If invalid or empty, reset everything
     if (!editValue.trim() || !isValidTime(editValue.trim())) {
       onTimeChange('') // Signal to reset
@@ -121,6 +124,7 @@ function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete,
     } else if (e.key === 'Escape') {
       setEditValue(time)
       setIsEditing(false)
+      if (onEditingChange) onEditingChange(false)
       onTimeChange('') // Reset
     }
   }

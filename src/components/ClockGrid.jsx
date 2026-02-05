@@ -11,6 +11,7 @@ function ClockGrid({ timeZones, onAddClick, onDelete, onShareClick, onAboutClick
   const [customTimeDate, setCustomTimeDate] = useState(null) // Date object representing the custom time
   const [invalidTimeInput, setInvalidTimeInput] = useState(false) // Track if current input is invalid
   const [lastValidTimes, setLastValidTimes] = useState({}) // Store last valid times for styling when invalid
+  const [isEditingTime, setIsEditingTime] = useState(false) // Track if user is editing any time field
 
   // Get user's current date for comparison
   const getUserDate = () => {
@@ -276,8 +277,12 @@ function ClockGrid({ timeZones, onAddClick, onDelete, onShareClick, onAboutClick
     if (!timeString || !timeString.trim()) {
       setCustomTimeDate(null)
       setInvalidTimeInput(false)
+      setIsEditingTime(false)
       return
     }
+
+    // User is editing
+    setIsEditingTime(true)
 
     // Check if valid format
     if (!isValidTimeFormat(timeString)) {
@@ -536,6 +541,7 @@ function ClockGrid({ timeZones, onAddClick, onDelete, onShareClick, onAboutClick
               isUserTimeZone={isUserTz}
               onDelete={canDelete ? () => onDelete(tz) : null}
               onTimeChange={(timeString) => handleTimeChange(tz, timeString)}
+              onEditingChange={setIsEditingTime}
             />
           )
         })}
@@ -544,15 +550,6 @@ function ClockGrid({ timeZones, onAddClick, onDelete, onShareClick, onAboutClick
         <button className="add-clock-button" onClick={onAddClick} title="Add clock">
           <Plus size={24} />
         </button>
-        {customTimeDate && (
-          <button 
-            className="reset-time-button" 
-            onClick={() => setCustomTimeDate(null)}
-            title="Reset to current time"
-          >
-            <RotateCcw size={20} />
-          </button>
-        )}
         <button 
           className="share-button" 
           onClick={onShareClick}
@@ -567,6 +564,19 @@ function ClockGrid({ timeZones, onAddClick, onDelete, onShareClick, onAboutClick
         >
           <Info size={20} />
         </button>
+        {(customTimeDate || invalidTimeInput) && (
+          <button 
+            className="reset-time-button" 
+            onClick={() => {
+              setCustomTimeDate(null)
+              setInvalidTimeInput(false)
+              setIsEditingTime(false)
+            }}
+            title="Reset to current time"
+          >
+            <RotateCcw size={20} />
+          </button>
+        )}
       </div>
     </div>
   )
