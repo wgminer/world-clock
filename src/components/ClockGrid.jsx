@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import ClockCard from './ClockCard'
 import { getDarknessLevel, getBackgroundColor, getTextColor } from '../utils/sunTimes'
 import { getActualTimezone } from '../utils/timeZoneMapping'
-import { Plus, RotateCcw, Share2, Info } from 'lucide-react'
+import { Plus, RotateCcw, Share2, HelpCircle } from 'lucide-react'
 import './ClockGrid.css'
 import './Sidebar.css'
 
@@ -562,7 +562,7 @@ function ClockGrid({ timeZones, onAddClick, onDelete, onShareClick, onAboutClick
           onClick={onAboutClick}
           title="About"
         >
-          <Info size={20} />
+          <HelpCircle size={20} />
         </button>
         {(customTimeDate || invalidTimeInput) && (
           <button 

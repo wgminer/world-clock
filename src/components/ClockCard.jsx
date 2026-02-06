@@ -91,7 +91,7 @@ function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete,
 
   const handleTimeClick = (e) => {
     // Don't trigger if clicking on delete button or other elements
-    if (e.target.closest('.delete-button') || e.target.closest('.user-badge')) {
+    if (e.target.closest('.delete-button')) {
       return
     }
     setIsEditing(true)
@@ -166,6 +166,11 @@ function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete,
           REMOVE
         </button>
       )}
+      {isUserTimeZone && (
+        <div className="you-are-here-indicator">
+          YOU ARE HERE
+        </div>
+      )}
       <div className="clock-card-content">
         <div className="time-display-wrapper">
           {isEditing ? (
@@ -193,10 +198,9 @@ function ClockCard({ timeZone, time, dateOffset, hour, isUserTimeZone, onDelete,
             </div>
           )}
         </div>
-        <div className="location-display">{displayName}</div>
-        {isUserTimeZone && (
-          <span className="user-badge">you</span>
-        )}
+        <div className="location-display-wrapper">
+          <div className="location-display">{displayName}</div>
+        </div>
       </div>
     </div>
   )
