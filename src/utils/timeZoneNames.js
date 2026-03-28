@@ -9,11 +9,23 @@ export const TIMEZONE_SHORTHAND = {
   'America/San_Francisco': 'SF',
   'America/Seattle': 'SEA',
   'America/Portland': 'PDX',
+  'America/San_Diego': 'SAN',
   'America/Phoenix': 'PHX',
   'America/Anchorage': 'ANC',
   'Pacific/Honolulu': 'HNL',
+  'Pacific/Hawaii': 'HAW',
   'America/Toronto': 'TOR',
+  'America/Montreal': 'MTL',
+  'America/Quebec_City': 'QBC',
+  'America/Ottawa': 'YOW',
+  'America/Halifax': 'HFX',
+  'America/St_Johns': 'YYT',
+  'America/Winnipeg': 'WPG',
+  'America/Regina': 'YQR',
+  'America/Edmonton': 'YEG',
+  'America/Calgary': 'YYC',
   'America/Vancouver': 'VAN',
+  'America/Victoria_BC': 'YYJ',
   'America/Mexico_City': 'MEX',
   // South America
   'America/Sao_Paulo': 'SP',
@@ -54,6 +66,13 @@ export const TIMEZONE_SHORTHAND = {
   'Asia/Baghdad': 'BGW',
   // Asia - Major Cities
   'Asia/Tokyo': 'TYO',
+  'Asia/Yokohama': 'YOK',
+  'Asia/Osaka': 'OSA',
+  'Asia/Kyoto': 'KYO',
+  'Asia/Nagoya': 'NGO',
+  'Asia/Fukuoka': 'FUK',
+  'Asia/Sapporo': 'SPK',
+  'Asia/Hiroshima': 'HIJ',
   'Asia/Seoul': 'SEL',
   'Asia/Shanghai': 'SHA',
   'Asia/Hong_Kong': 'HKG',
@@ -82,6 +101,8 @@ export const TIMEZONE_SHORTHAND = {
   'Australia/Sydney': 'SYD',
   'Australia/Melbourne': 'MEL',
   'Australia/Brisbane': 'BNE',
+  'Australia/Canberra': 'CBR',
+  'Australia/Gold_Coast': 'OOL',
   'Australia/Perth': 'PER',
   'Australia/Adelaide': 'ADL',
   'Australia/Darwin': 'DRW',
@@ -96,6 +117,10 @@ export const TIMEZONE_SHORTHAND = {
   'Africa/Casablanca': 'CMN',
 }
 
+const TIMEZONE_DISPLAY_OVERRIDES = {
+  'America/Victoria_BC': 'Victoria, BC',
+}
+
 // Reverse mapping: shorthand to full timezone
 export const SHORTHAND_TO_TIMEZONE = Object.fromEntries(
   Object.entries(TIMEZONE_SHORTHAND).map(([tz, shorthand]) => [shorthand, tz])
@@ -108,6 +133,9 @@ export function getTimezoneShorthand(timeZone) {
 
 // Get full city name for display
 export function getTimezoneDisplayName(timeZone) {
+  if (TIMEZONE_DISPLAY_OVERRIDES[timeZone]) {
+    return TIMEZONE_DISPLAY_OVERRIDES[timeZone]
+  }
   const parts = timeZone.split('/')
   const city = parts[parts.length - 1].replace(/_/g, ' ')
   
